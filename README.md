@@ -1,8 +1,10 @@
 # The Owl, the Chihuahua, and the Panda
 
-> *"Engineering wisdom told through fables, survived by an on-call Panda, and proven with benchmarks."*
+![The Owl, the Chihuahua, and the Panda](./assets/coffee_fable_trio.jpg)
 
-A collection of engineering stories, architectural fables, and software development insights. We break down abstract, complex software concepts into engaging, intuitive, and entertaining stories—told from the first-person perspective of a battle-hardened on-call engineer, and always backed up by concrete code and benchmark proof.
+> *"Engineering wisdom told through everyday fables, survived by an on-call Panda, and proven with benchmarks."*
+
+A collection of engineering stories, architectural fables, and software development insights. We break down abstract, complex software concepts into engaging, intuitive, and entertaining stories—told from the first-person perspective of a battle-hardened maintainer, and always backed up by concrete code and benchmark proof.
 
 ---
 

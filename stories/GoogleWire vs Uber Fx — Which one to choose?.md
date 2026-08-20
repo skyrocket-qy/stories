@@ -3,6 +3,8 @@ Software
 
 # Google Wire vs. Uber Fx: What Time Do You Want to Panic?
 
+![The Owl, the Chihuahua, and the Panda at the dev coffee station](../assets/coffee_fable_trio.jpg)
+
 **TL;DR:** Choose **Google Wire** unless you truly need Uber Fx's application lifecycle hooks. Your future self will thank you.
 
 ---
@@ -92,6 +94,8 @@ At their core, both tools do the same job—they wire your structs together. But
 
 * **Uber Fx (Runtime):** Waits until the program starts up, then uses runtime reflection to figure out what fits where. If something is missing, it crashes at runtime.
 * **Google Wire (Compile-time):** Figures out what fits where ahead of time, generates plain standard Go code, and catches missing parts at compile time.
+
+![Runtime Reflection (Uber Fx) vs Compile-Time Code Generation (Google Wire)](../assets/wire_vs_fx_fable.jpg)
 
 ---
 
