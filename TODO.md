@@ -82,3 +82,6 @@ A curated backlog of software engineering philosophies, architectural principles
   *Why treating errors as plain returned values in Go beats magical, invisible try/catch exception handling.*
 - [ ] **"Don't communicate by sharing memory; share memory by communicating":**  
   *Channels vs. mutexes, and how goroutines avoid multi-threaded race conditions.*
+
+- The pain of data-driven
+- The pain of ECS
