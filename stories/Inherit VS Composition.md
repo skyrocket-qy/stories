@@ -1,6 +1,3 @@
-20240725
-Software
-
 # Because composition is superior to inheritance
 
 We have a duck and a chicken, and they work well. We noticed that ducks and chickens share many similarities—they both fly, they each have two legs and two wings, and they make sounds like "quack" or "cluck." So, we abstracted a parent class called Bird, from which both Duck and Chicken inherited. Then, when we wanted to add extra behavior for flying, we only needed to change the Bird class; the code was reduced and seemed easier to maintain. The Bird class worked great.
