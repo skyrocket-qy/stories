@@ -63,14 +63,3 @@ Complex software architecture doesn't have to be dry or impenetrable. Every stor
   > *"I'm looking at the logs. Stop touching things."*
 
 ---
-
-## 📖 Stories & Articles
-
-- [**Because composition is superior to inheritance**](./stories/Inherit_Vs_Composition.md)  
-  *Why inheritance traps developers in false taxonomies (the flying penguin problem), and how composition builds resilient software.*
-
-- [**Single Source of Truth**](./stories/Single_truth.md)  
-  *Real-world data anomalies, redundancy traps, and the engineering trade-offs between strict consistency and distributed performance.*
-
-- [**GoogleWire vs Uber Fx — Which one to choose?**](./stories/GoogleWire%20vs%20Uber%20Fx%20%E2%80%94%20Which%20one%20to%20choose%3F.md)  
-  *Compile-time code generation vs. runtime reflection in Go, backed by a ~485,000× instantiation benchmark.*
