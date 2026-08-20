@@ -2,7 +2,7 @@
 
 ![The Owl, the Chihuahua, and the Panda at the dev coffee station](../assets/coffee_fable_trio.jpg)
 
-**TL;DR:** Choose **Google Wire** unless you truly need Uber Fx's application lifecycle hooks. Your future self will thank you.
+**TL;DR:** In Go, focused microservices often don't need a DI tool at all—plain manual wiring in `main()` is usually best. But if your project genuinely grows complex enough to need a tool, choose **Google Wire** for compile-time safety. Your future self will thank you.
 
 ---
 
@@ -179,14 +179,46 @@ However, if your primary goal is simply clean Dependency Injection without magic
 
 ---
 
+## 💡 The Real Go Question: Do You Even Need a DI Tool?
+
+Before choosing between Wire and Fx, there is an even bigger question every Go developer should ask:
+
+> **"Does my service actually need a DI tool in the first place?"**
+
+Go's design philosophy heavily favors **small, single-purpose microservices**. In most real-world Go services, your entire startup wiring in `main()` looks like this:
+
+```go
+func main() {
+    cfg := config.Load()
+    db := database.New(cfg.DB)
+    repo := repository.NewUserRepo(db)
+    svc := service.NewUserService(repo)
+    server := server.NewHTTPServer(svc)
+
+    server.Run()
+}
+```
+
+This is **pure, manual Dependency Injection**. 
+
+It is 10 lines of plain, readable Go. It requires **0 external dependencies, 0 code generators, and 0 runtime reflection frameworks**. Anyone on the team can understand the entire architecture in 10 seconds.
+
+If you find yourself desperately reaching for a DI tool because your dependency graph is a tangled nightmare of 50 interdependent components, pause and review your architecture first:
+* *Is this microservice trying to do too much?*
+* *Has it quietly evolved into a bloated monolith?*
+* *Can we simplify our package boundaries instead of adding a tool to manage the chaos?*
+
+---
+
 ## 🐼 The Panda's Verdict
 
 As the maintainer who has to keep the lights on:
 
-1. **Explicit is better than magical.** Go's philosophy has always favored clear, readable, compile-time safety over runtime reflection magic.
-2. **A compile error is a blessing.** Every mistake caught by `go build` while writing code is an outage that never happened.
-3. **Keep it simple.** Use **Google Wire**. Generate your wiring, review the generated Go code, and enjoy a quiet, uninterrupted cup of coffee.
+1. **First, ask if you need a tool at all:** If your service is small and focused, just write manual constructors in `main()`. Simplicity is Go's greatest superpower.
+2. **If your project genuinely grows complex:** Choose **Google Wire**. Generate your wiring statically, review the generated `wire_gen.go` code, and let the Go compiler protect your production environment.
+3. **Avoid runtime reflection traps:** Every bug caught by `go build` during the day is an on-call alert that never wakes you up at night.
 
 ---
 
 *Reproducible benchmark code is available in this repository under [`benchmarks/fx-vs-wire/`](../benchmarks/fx-vs-wire).*
+
