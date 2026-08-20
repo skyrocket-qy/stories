@@ -1,0 +1,1 @@
+⏰ Idea 1: The Two Wall Clocks (Segal's Law)
