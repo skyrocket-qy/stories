@@ -1,20 +1,20 @@
-# Retrun structs, not interfaces
+# Return structs, not interfaces
 
 ## The Owl's Factory
 
 DiDong! The Panda walks into the Owl's factory.
 > *"I need something to put my laptop and coffee"*
 
-The Owl builds a sturdy table with flat top and says:
+The Owl builds a sturdy table with flat top
 > *"Here you go! This is a Table interface. You can use it to put your laptop and coffee!"*
 
 The Chihuahua Rushes In
 > *"Hey! I need a table to hold pizzas and beers, today is my birthday! I want to throw a party!"*
 
-The Chihuahua spots the table sitting at the corner and say:
+The Chihuahua spots the table sitting in the corner
 > *"That table seems perfect!, give me the same table!"*
 
-The Owl takes out the blueprints:
+The Owl takes out the blueprints
 > *"No, it was designed for laptop and coffee. Not for pizzas and beers."*
 
 The Chihuahua’s Rage
@@ -22,10 +22,10 @@ The Chihuahua’s Rage
 
 ## What is the problem?
 
-A table with the flat top can be used for many things, it is no need to restrict its usage!
+A table with the flat top can be used for many things, there is no need to restrict its usage!
 
 ```Go
-// The panda want
+// The panda wants
 type WorkTable interface{
     PutCoffee()
     PutLaptop()
@@ -36,7 +36,7 @@ func StartWorking(w WorkTable) {
     w.PutCoffee()
 }
 
-// The Chihuahua want
+// The Chihuahua wants
 type PartyTable interface{
     PutPizzas()
     PutBeers()
@@ -47,12 +47,12 @@ func HostParty(p PartyTable) {
     p.PutBeers()
 }
 
-// The Owl thinking(WRONG!!!)
+// The Owl thinking ❌ (WRONG!!!)
 func NewWorkTable() WorkTable{}
 func NewPartyTable() PartyTable{}
     
 
-// But the reality is 
+// The flexible solution
 type Table struct{}
 func NewTable() Table{}
 func (t Table) PutCoffee(){}
@@ -67,6 +67,5 @@ func main() {
     HostParty(table)    // ✅ Also works!
 }
 
-
 ```
-> *""*
+> *"Give them the table and stop trying to predict their business."*
