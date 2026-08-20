@@ -1,4 +1,4 @@
-# Retrun struct, not interface
+# Retrun structs, not interfaces
 
 ## The Owl's Factory
 
@@ -14,15 +14,15 @@ The Chihuahua Rushes In
 The Chihuahua spots the table sitting at the corner and say:
 > *"That table seems perfect!, give me the same table!"*
 
-The Owl take out the design drawings:
-> *"No, it is design for put laptop and coffee. Not for pizzas and beers."*
+The Owl takes out the blueprints:
+> *"No, it was designed for laptop and coffee. Not for pizzas and beers."*
 
 The Chihuahua’s Rage
 > *"Idiot! It is a table, what difference does it make, I want the same table, NOW!"*
 
 ## What is the problem?
 
-A table with the flat top can be used for many things, it is no need to restrict it's usage!!!
+A table with the flat top can be used for many things, it is no need to restrict its usage!
 
 ```Go
 // The panda want
@@ -31,13 +31,23 @@ type WorkTable interface{
     PutLaptop()
 }
 
+func StartWorking(w WorkTable) {
+    w.PutLaptop()
+    w.PutCoffee()
+}
+
 // The Chihuahua want
 type PartyTable interface{
     PutPizzas()
     PutBeers()
 }
 
-// The Owl thinking
+func HostParty(p PartyTable) {
+    p.PutPizzas()
+    p.PutBeers()
+}
+
+// The Owl thinking(WRONG!!!)
 func NewWorkTable() WorkTable{}
 func NewPartyTable() PartyTable{}
     
@@ -50,4 +60,13 @@ func (t Table) PutLaptop(){}
 func (t Table) PutPizzas(){}
 func (t Table) PutBeers(){}
 
+func main() {
+    table := NewTable()
+
+    StartWorking(table) // ✅ Works!
+    HostParty(table)    // ✅ Also works!
+}
+
+
 ```
+> *""*
