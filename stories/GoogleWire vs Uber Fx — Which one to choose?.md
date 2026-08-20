@@ -1,24 +1,75 @@
-TL;DR: “Wire”
+# Google Wire vs. Uber Fx: What Time Do You Want to Panic?
 
-Wire and Fx are also popular DI tool in Go, but they implement with different method.
+**TL;DR:** Choose **Google Wire** unless you truly need Uber Fx's application lifecycle hooks. Your 3:00 AM on-call self will thank you.
 
-Wire: Compile-time DI tool
+---
 
-Fx: Runtime DI framework
+It was 3:14 AM on a Tuesday when my pager went off. 
 
-Learn about Medium’s values
-The main difference is: What time did they do the computation?
+I peeled the half-dried cooling gel patch from my forehead, took a sip of lukewarm black coffee, and stared through heavy eyelids at the Kubernetes console. Pod restart count: `18`. Status: `CrashLoopBackOff`. 
 
-Dependency Graph
-Life cycle management
-Error handling
-Reflection
-While Wire do anything on compile-time(also without reflection), it has no extra overhead on the runtime, also get the shorter server restart time.
+Ten minutes earlier, the Chihuahua—running on four consecutive double-espressos and pure adrenaline—had pushed a hotfix directly to `main` with a commit message that simply read `fix fast`. 
 
-Here is the simple benchmark:
+The code compiled cleanly. The CI pipeline gave it a green checkmark. But the moment the binary started up in production, it immediately panicked and exploded into a 40-line stack trace:
 
+```text
+panic: could not build arguments for function "main".NewPaymentService: 
+  missing dependency: *database.Client is not provided in container
+```
+
+At 3:20 AM, the Owl perched onto our emergency incident sync. Adjusting its gold wire-rimmed spectacles, the Owl cleared its throat:
+
+> *"According to modern enterprise design paradigms, our inversion-of-control container elegantly encapsulates dynamic component graphs. The crash is merely an environmental configuration oversight."*
+
+I rubbed my dark eye rings and looked at the raw logs. *"Stop touching things. I'm rolling back the deployment."*
+
+---
+
+## The Real Question: *When* Does the Computation Happen?
+
+Both **Google Wire** and **Uber Fx** are the two most popular Dependency Injection (DI) tools in the Go ecosystem. On paper, they solve the same fundamental problem: you have a web of structs, repositories, database pools, and HTTP handlers that need to be wired together.
+
+Instead of manually writing nested constructors in `main()` like this:
+
+```go
+db := database.New(cfg)
+repo := repository.New(db)
+svc := service.New(repo)
+handler := handler.New(svc)
+```
+
+...DI tools automate this wiring for you.
+
+However, the Owl and I disagree fundamentally on **when** that automation should take place:
+
+* **Uber Fx** is a **runtime** dependency injection framework. It inspects your constructors at runtime using Go’s `reflect` package, builds a dependency graph in memory while the server boots, and resolves dependencies on the fly.
+* **Google Wire** is a **compile-time** dependency injection code generator. It inspects your types ahead of time, connects the graph statically, and generates plain, readable Go code (`wire_gen.go`) before you ever build the binary.
+
+The difference between them comes down to a single question: **Do you want your computer to do the math while you are writing code at 2:00 PM, or while your server is booting in production at 3:00 AM?**
+
+---
+
+## The Fable: The Pre-Cut Blueprint vs. The Box in the Dark
+
+Imagine you are assembling a piece of furniture:
+
+* **The Wire Approach (The Pre-Cut Blueprint):**  
+  Before you leave the workshop, an automated machine inspects your parts list, verifies that every bolt fits into every nut, and prints out a step-by-step instruction manual (`wire_gen.go`). If a crucial screw is missing, the machine refuses to let you leave the shop. You fix the mistake while the lights are on.
+
+* **The Fx Approach (The Mystery Box in the Dark):**  
+  You toss all your loose bolts, gears, and screws into a giant black box (`fx.New`). When you plug the machine in at customer site, a robotic arm reaches inside, turns on a flashlight, uses reflection to feel the shape of each screw, and tries to assemble the machine while the power is live. If a bolt is missing, the entire machine explodes in the customer's face.
+
+The Owl loves the mystery box because it looks sophisticated on architecture diagrams. But as the Panda who has to clean up the pieces when the box catches fire, I prefer the blueprint.
+
+---
+
+## The Hard Proof: Benchmarking Wire vs. Fx
+
+Let's look at the hard data. We set up a minimal service constructor benchmark:
+
+```go
 type Service interface {
- Do()
+    Do()
 }
 
 type MyService struct{}
@@ -26,13 +77,72 @@ type MyService struct{}
 func (s *MyService) Do() {}
 
 func NewService() Service {
- return &MyService{}
+    return &MyService{}
 }
-Fx: 152545 ns/op
+```
 
-Wire: 0.3146 ns/op
+We benchmarked three scenarios:
+1. **Direct (Manual):** Instantiating `NewService()` directly in Go.
+2. **Google Wire:** Resolving through `InitializeService()` generated by Wire.
+3. **Uber Fx (`fx.New`):** Resolving through Fx's dynamic reflection container.
 
-Wire is roughly 484,885 times faster!!!
+Here are the reproducible benchmark results (run on Apple Silicon, available in [`benchmarks/fx-vs-wire`](../benchmarks/fx-vs-wire)):
 
-Code[!https://github.com/skyrocket-qy/fx-vs-wire]
+```text
+BenchmarkWire-10         	1000000000	      0.2271 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDirect-10       	1000000000	      0.2254 ns/op	       0 B/op	       0 allocs/op
+BenchmarkFx-10           	     39981	   30595.0000 ns/op	   35621 B/op	     511 allocs/op
+BenchmarkFxNewOnly-10    	     43504	   27659.0000 ns/op	   35355 B/op	     499 allocs/op
+```
 
+### What do these numbers tell us?
+
+1. **Wire is 135,000× faster than Fx with Zero Overhead:**  
+   Wire executes in **`0.22 nanoseconds`** with **`0 bytes`** and **`0 memory allocations`**. Why? Because Wire compiles down to the exact same machine code as hand-written Go (`BenchmarkDirect`). The Go compiler can inline it directly into a single CPU instruction.
+
+2. **The Hidden Cost of `fx.New`:**  
+   Uber Fx takes **`~30 microseconds`** (30,595 ns) and burns through **`511 heap allocations`** (~35.6 KB of memory) just to instantiate a single trivial service. Over **90% of that time (`27.6 µs`)** is spent inside `fx.New`—scanning type signatures, building internal directed acyclic graphs (DAGs), and traversing reflection metadata.
+
+In a long-running microservice, you might argue: *"Who cares about 30 microseconds on startup?"*
+
+Here is who cares:
+* **Serverless & Lambda Functions:** Where cold-start latency directly degrades user response times and costs real cloud dollars.
+* **CLI Tools:** Where command execution must feel instantaneous.
+* **Unit & Integration Test Suites:** When your test suite boots 500 test containers, Fx adds seconds of reflection drag, whereas Wire tests run in milliseconds.
+* **On-Call Maintainers:** When a missing constructor argument crashes production instead of failing the build.
+
+---
+
+## Feature Comparison: The 4 Core Dimensions
+
+| Feature | 🦉 Uber Fx | 🐼 Google Wire |
+| :--- | :--- | :--- |
+| **Dependency Graph** | Built dynamically at runtime using `reflect` | Pre-computed statically at compile-time |
+| **Error Detection** | 💥 **Runtime Panic** during container bootstrap | 🛡️ **Compile Error** during `go build` / `wire` |
+| **Runtime Overhead** | High (~30 µs + 500+ heap allocs per container) | **Zero** (~0.22 ns, 0 allocs, fully inlined) |
+| **Code Inspection** | Buried inside reflection abstractions | Plain, readable Go code in `wire_gen.go` |
+| **Lifecycle Hooks** | Built-in (`OnStart`, `OnStop`, graceful teardown) | Manual (cleanup closures: `func()`) |
+
+---
+
+## When *Does* Uber Fx Make Sense?
+
+To give the Owl some credit, Uber Fx is not just a DI library; it is a full **application lifecycle container**. 
+
+If you are building a massive monolithic microservice with 80 disparate modules, and you need structured, coordinated startup/shutdown ordering (e.g. *"Stop HTTP listener -> flush Kafka producer -> close MySQL connections"*), Fx’s built-in `fx.Hook` system is genuinely convenient.
+
+But if all you want is clean, decoupled Dependency Injection, bringing in reflection and runtime panics is using a sledgehammer when you just needed a screwdriver.
+
+---
+
+## The Panda's Verdict
+
+As the on-call engineer who has to wake up when servers crash:
+
+1. **Explicit is better than implicit.** Go was designed from day one to avoid magical runtime reflection whenever possible.
+2. **Compile-time failures are gifts.** Every bug caught by `go build` is a bug that didn't wake you up at 3:00 AM.
+3. **If you must choose:** Choose **Google Wire**. Generate the code, inspect the generated `wire_gen.go` file with your own eyes, and sleep through the night.
+
+---
+
+*Reproducible benchmark code is available in this repository under [`benchmarks/fx-vs-wire/`](../benchmarks/fx-vs-wire).*
