@@ -62,7 +62,6 @@ func (t Table) PutBeers(){}
 
 func main() {
     table := NewTable()
-
     StartWorking(table) // ✅ Works!
     HostParty(table)    // ✅ Also works!
 }
