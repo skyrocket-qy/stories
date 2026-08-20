@@ -1,32 +1,37 @@
-# Return structs, not interfaces
+# Return Structs, Not Interfaces
 
-## The Owl's Factory
+![The Owl, the Chihuahua, and the Panda at the factory](../assets/owl_factory_table_fable.jpg)
 
-DiDong! The Panda walks into the Owl's factory.
-> *"I need something to put my laptop and coffee"*
+## 🏭 The Owl's Factory
 
-The Owl builds a sturdy table with flat top
+*DiDong!* The Panda walks into the Owl's factory.
+
+> *"I need something to put my laptop and coffee."*
+
+The Owl builds a sturdy table with a flat top:
 > *"Here you go! This is a Table interface. You can use it to put your laptop and coffee!"*
 
-The Chihuahua Rushes In
+The Chihuahua rushes in:
 > *"Hey! I need a table to hold pizzas and beers, today is my birthday! I want to throw a party!"*
 
-The Chihuahua spots the table sitting in the corner
-> *"That table seems perfect!, give me the same table!"*
+The Chihuahua spots the table sitting in the corner:
+> *"That table seems perfect! Give me the same table!"*
 
-The Owl takes out the blueprints
-> *"No, it was designed for laptop and coffee. Not for pizzas and beers."*
+The Owl takes out the blueprints:
+> *"No, it was designed for a laptop and coffee. Not for pizzas and beers."*
 
-The Chihuahua’s Rage
-> *"Idiot! It is a table, what difference does it make, I want the same table, NOW!"*
+The Chihuahua barks in rage:
+> *"Idiot! It is a table, what difference does it make? I want the same table, NOW!"*
 
-## What is the problem?
+---
 
-A table with the flat top can be used for many things, there is no need to restrict its usage!
+## 🪵 What is the Problem?
 
-```Go
-// The panda wants
-type WorkTable interface{
+A table with a flat top can be used for many things—there is no need to restrict its usage!
+
+```go
+// The Panda wants
+type WorkTable interface {
     PutCoffee()
     PutLaptop()
 }
@@ -37,7 +42,7 @@ func StartWorking(w WorkTable) {
 }
 
 // The Chihuahua wants
-type PartyTable interface{
+type PartyTable interface {
     PutPizzas()
     PutBeers()
 }
@@ -47,24 +52,26 @@ func HostParty(p PartyTable) {
     p.PutBeers()
 }
 
-// The Owl thinking ❌ (WRONG!!!)
-func NewWorkTable() WorkTable{}
-func NewPartyTable() PartyTable{}
-    
+// The Owl's design ❌ (WRONG)
+func NewWorkTable() WorkTable   {}
+func NewPartyTable() PartyTable {}
 
-// The flexible solution
+// The flexible solution ✅
 type Table struct{}
-func NewTable() Table{}
-func (t Table) PutCoffee(){}
-func (t Table) PutLaptop(){}
-func (t Table) PutPizzas(){}
-func (t Table) PutBeers(){}
+
+func NewTable() Table           {}
+func (t Table) PutCoffee()      {}
+func (t Table) PutLaptop()      {}
+func (t Table) PutPizzas()      {}
+func (t Table) PutBeers()       {}
 
 func main() {
     table := NewTable()
     StartWorking(table) // ✅ Works!
     HostParty(table)    // ✅ Also works!
 }
-
 ```
+
+---
+
 > *"Give them the table and stop trying to predict their business."*
