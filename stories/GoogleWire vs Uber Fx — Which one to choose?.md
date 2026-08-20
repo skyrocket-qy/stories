@@ -1,6 +1,3 @@
-20240820
-Software
-
 # Google Wire vs. Uber Fx: What Time Do You Want to Panic?
 
 ![The Owl, the Chihuahua, and the Panda at the dev coffee station](../assets/coffee_fable_trio.jpg)
