@@ -18,23 +18,27 @@ The 🐼Panda is put in charge of the city zoo's animal registry.
 
 🐤 **Rubber Duck** arrives...
 
-## What is the problem of Inheritance?
+## 🪵 What is the Problem with Inheritance?
 
-we try to find common characteristics and put them in a base class(Bird), then put chicken and Duck into it.
+We try to find common traits and package them into a base `Bird` class.
 
-However, we never know what animal will appear next, and break the existing hierarchy.
+However, **we can never predict what arrives next**—and every new animal threatens our neat hierarchy.
 
-If such thing occurs, we have to refactor the Bird class, add more properties or methods, or break the class into pieces, and regroup them, and regroup them, again and again.
+When that happens, we get trapped in a loop:
+- Refactor the `Bird` class.
+- Break it into pieces (`FlyingBird`, `NoFlyBird`).
+- Regroup, rename, and rewrite again and again.
 
-And how to name the class? we will spend a lot of time thinking about this.
+And naming those abstract classes? We waste hours debating taxonomy instead of shipping code.
 
 
-## How Composition solves this?
+## 🧩 How Composition Solves This
 
-Inheritance forces an 'is-a' relationship, while composition is a 'has-a/can-do' relationship.
+Inheritance forces an **"is-a"** relationship, while composition is about **"has-a / can-do"**.
 
-For duck and chicken, we just give two wings and fly method.
-For penguins, we only give two wings.
-For Kiwi, we may give two legs.
+- For **Duck** and **Chicken**, we just give `Wings` and `Fly()`.
+- For **Penguin**, we only give `Wings` and `Swim()`.
+- For **Kiwi**, we only give `Legs`.
+- For **Rubber Duck**, we only give `Float()`.
 
 > *"We don't care what they are, just what they can do or have."*
