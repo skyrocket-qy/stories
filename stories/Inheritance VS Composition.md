@@ -35,6 +35,25 @@ When that happens, we get trapped in a loop:
 
 And naming those abstract classes? We waste hours debating taxonomy instead of shipping code.
 
+```python
+# Step 1: Duck & Chicken arrive
+class Bird:
+    def fly(self): pass
+
+# Step 2: Penguin arrives (can't fly!) -> Split the class!
+class FlyingBird(Bird):
+    def fly(self): pass
+
+class NoFlyBird(Bird):
+    pass
+
+# Step 3: Kiwi arrives (no wings!) -> Split again!
+class WingedBird(Bird): pass
+class WinglessBird(Bird): pass
+
+# Step 4: Rubber Duck arrives (plastic toy!) -> 💥 Total collapse!
+# Does RubberDuck inherit from Bird? Toy? PlasticThing?
+```
 
 ## 🧩 How Composition Solves This
 
@@ -44,5 +63,18 @@ Inheritance forces an **"is-a"** relationship, while composition is about **"has
 - For **Penguin**, we only give `Wings` and `Swim()`.
 - For **Kiwi**, we only give `Legs`.
 - For **Rubber Duck**, we only give `Float()`.
+
+```go
+// 1. Define independent capabilities
+type Flyer interface{ Fly() }
+type Swimmer interface{ Swim() }
+type Walker interface{ Walk() }
+
+// 2. Each animal just has what it can do — no hierarchy needed!
+type Duck struct{}       // Implements Flyer, Swimmer, Walker
+type Penguin struct{}    // Implements Swimmer, Walker
+type Kiwi struct{}       // Implements Walker
+type RubberDuck struct{} // Implements Swimmer (floats!)
+```
 
 > *"We don't care what they are, just what they can do or have."*
