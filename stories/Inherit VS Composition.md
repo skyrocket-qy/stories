@@ -4,17 +4,19 @@
 
 The Panda is put in charge of the city zoo's animal registry.
 
-A duck and a chicken comes to my zoo. They both have wings and can fly.
+🦆 Duck & 🐔 Chicken arrive. They both have wings and can fly.
 
-Ok, we create a `Bird`(class) which have wings and can fly, and it is perfect for both of them.
+🐼: Create a Bird class (wings, fly). Perfect for both.
 
-🐧 A Penguin arrives, it has two wings but can't fly, so I create a `NoFlyBird`(class) and classify it.
+🐧 Penguin arrives, it has wings, but can't fly.
 
-🥝 A Kiwi arrives, it has legs, but no wings.
+🐼: Create a NoFlyBird class to classify it.
 
-So, is it not a bird? I confused.
+🥝 Kiwi arrives, it has legs, but no wings.
 
-🐤 A Rubber Duck arrives...
+🐼: Is it not a bird? I am confused.
+
+🐤 Rubber Duck arrives...
 
 ## What is the problem?
 
