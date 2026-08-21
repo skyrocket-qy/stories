@@ -1,21 +1,22 @@
 # Single Source of Truth
 
+![The Owl, the Chihuahua, and the Panda at the milk depot](../assets/coffee_fable_trio.jpg)
+
 ## 🥛 The Store Milk Avalanche
+Every morning **we must always have exactly 50 cartons of milk on the shelves for the morning rush.**
 
-The Owl, the Chihuahua, and the Panda are working together in a milk store, The Owl is in charge of the inventory, each morning, the Owl checks the stock and writes down the number of milk needed(total: 50) on the whiteboard for the day. and the Panda is in charge of importing milk from the warehouse.
-
-> *"Each day: 50 milks"*
+🦉 The Owl: Count inventory and Calculate the needed 
 > *"8/1 Currently: 30 milks, Needed: 20"*
 Panda import 20 milks 
 > *"8/2 Currently: 15 milks, Needed: 35"*
 Panda import 35 milks 
 
-
+## 💥 The Incident: The Missing Milk
 > *"8/3 Currently: 17 milks, Needed: 33"*
 The Chihuahua, the newcomer, feel thirsty and take one milk from the store.
 Panda import 33 milks 
 
-Total: 49 milks
+At 9:00 AM, the store opened. The morning audit failed. An emergency post-mortem was called.
 
 > *"It is not my problem!!!, My calculation is correct! Says the Owl!"*
 > *"It is not my problem!!!, I always watch the needed entries! Says the Panda!"*
@@ -28,6 +29,8 @@ We don't need "needed" value to be write down on the whiteboard, it can be  calc
 
 
 ```go
+const TargetCap = 50
+
 // ❌ The Anti-Pattern: Redundant Field NeedMilk
 type MilkStore struct{
     CurMilk int
@@ -35,7 +38,7 @@ type MilkStore struct{
 }
 
 func (m *MilkStore) CalculateNeededMilk() {
-    m.NeededMilk = 50 - m.CurMilk
+    m.NeededMilk = TargetCap - m.CurMilk
 }
 
 func (m *MilkStore) NeededMilk() int {
@@ -48,7 +51,35 @@ type MilkStore struct{
 }
 
 func (m *MilkStore) NeededMilk() int {
-    return 50 - m.CurMilk
+    return TargetCap - m.CurMilk
+}
+```
+
+## 🪵 The Real world example (User Suspend)
+
+❌ The Bug-Prone Anti-Pattern
+```go
+
+
+type User struct {
+    ID             int
+    IsActive       bool       // ❌ Lying state: turns stale the moment time passes
+    SuspendedUntil *time.Time
+}
+```
+✅ The Single Source of Truth (SSoT) Solution
+```go
+type User struct {
+    ID             int
+    SuspendedUntil *time.Time // 🛡️ Single Source of Truth
 }
 
+// IsActive derives the status dynamically based on current time.
+// It can NEVER become stale because time is evaluated at read time.
+func (u *User) IsActive(now time.Time) bool {
+    if u.SuspendedUntil == nil {
+        return true
+    }
+    return now.After(*u.SuspendedUntil)
+}
 ```
