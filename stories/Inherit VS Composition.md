@@ -1,0 +1,2 @@
+# Inherit VS Composition
+
