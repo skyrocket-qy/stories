@@ -1,6 +1,6 @@
 # Single Source of Truth
 
-![The Owl, the Chihuahua, and the Panda at the milk depot](../assets/coffee_fable_trio.jpg)
+![The Owl, the Chihuahua, and the Panda at the milk depot](../assets/milk_depot_fable.jpg)
 
 ## 🥛 The Store Milk Avalanche
 
