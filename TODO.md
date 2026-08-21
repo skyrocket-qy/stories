@@ -85,3 +85,4 @@ A curated backlog of software engineering philosophies, architectural principles
 
 - The pain of data-driven
 - The pain of ECS
+- Liskov Substitution Principle 
