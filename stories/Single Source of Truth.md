@@ -26,11 +26,12 @@ Total: 49 milks
 
 We don't need "needed" value to be write down on the whiteboard, it can be  calculated from the "currently" value.
 
-❌
+
 ```go
+// ❌ The Anti-Pattern: Redundant Field NeedMilk
 type MilkStore struct{
     CurMilk int
-    NeededMilk int
+    NeededMilk int // ❌ Redundant, can be calculated from CurMilk
 }
 
 func (m *MilkStore) CalculateNeededMilk() {
@@ -41,10 +42,7 @@ func (m *MilkStore) NeededMilk() int {
     return m.NeededMilk
 }
 
-```
-
 ✅
-```go
 type MilkStore struct{
     CurMilk int
 }
