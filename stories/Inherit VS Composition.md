@@ -2,21 +2,21 @@
 
 ## 🦆 The Grand Zoo Taxonomy
 
-The Panda is put in charge of the city zoo's animal registry.
+The 🐼Panda is put in charge of the city zoo's animal registry.
 
-🦆 Duck & 🐔 Chicken arrive. They both have wings and can fly.
+🦆 **Duck** & 🐔 **Chicken** arrive. They both have `wings` and can `fly`.
 
-🐼: Create a Bird class (wings, fly). Perfect for both.
+> 🐼 **Panda:** *"Create a `Bird` class (`wings`, `fly`). Perfect!"*
 
-🐧 Penguin arrives, it has wings, but can't fly.
+🐧 **Penguin** arrives. It has `wings`, but **can't fly**.
 
-🐼: Create a NoFlyBird class to classify it.
+> 🐼 **Panda:** *"Create a `NoFlyBird` class to classify it."*
 
-🥝 Kiwi arrives, it has legs, but no wings.
+🥝 **Kiwi** arrives. It has `legs`, but **no wings**.
 
-🐼: Is it not a bird? I am confused.
+> 🐼 **Panda:** *"Is it not a `Bird`? I am confused."*
 
-🐤 Rubber Duck arrives...
+🐤 **Rubber Duck** arrives...
 
 ## What is the problem?
 
