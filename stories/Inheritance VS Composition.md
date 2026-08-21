@@ -1,4 +1,4 @@
-# Inherit vs. Composition
+# Inheritance vs. Composition
 
 ## 🦆 The Grand Zoo Taxonomy
 
@@ -18,7 +18,7 @@ The 🐼Panda is put in charge of the city zoo's animal registry.
 
 🐤 **Rubber Duck** arrives...
 
-## What is the problem?
+## What is the problem of Inheritance?
 
 we try to find common characteristics and put them in a base class(Bird), then put chicken and Duck into it.
 
