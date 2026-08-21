@@ -1,5 +1,7 @@
 # Inheritance vs. Composition
 
+![The Owl, the Chihuahua, and the Panda at the zoo animal intake](../assets/zoo_taxonomy_fable.jpg)
+
 ## 🦆 The Grand Zoo Taxonomy
 
 The 🐼Panda is put in charge of the city zoo's animal registry.
@@ -13,6 +15,8 @@ The 🐼Panda is put in charge of the city zoo's animal registry.
 > 🐼 **Panda:** *"Create a `NoFlyBird` class to classify it."*
 
 🥝 **Kiwi** arrives. It has `legs`, but **no wings**.
+
+![The Kiwi bird arrives at the zoo](../assets/kiwi_bird_fable.jpg)
 
 > 🐼 **Panda:** *"Is it not a `Bird`? I am confused."*
 
