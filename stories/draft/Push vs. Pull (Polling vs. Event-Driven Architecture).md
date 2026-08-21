@@ -1,0 +1,1 @@
+"Don't knock on the door 1,000 times a minute asking 'Are you home yet?' Ring the doorbell once."
