@@ -1,33 +1,35 @@
-# Inherit VS Composition
+# Inherit vs. Composition
 
-## The inheritance delima
+## 🦆 The Grand Zoo Taxonomy
 
-I am a zoo keeper, my goal is to classify animals.
+The Panda is put in charge of the city zoo's animal registry.
 
-A duck and a chicken comes to my zoo. They both have two wings and can fly.
+A duck and a chicken comes to my zoo. They both have wings and can fly.
 
-Ok, we create a `Bird`(class) which have two wings and can fly, and it is perfect for both of them.
+Ok, we create a `Bird`(class) which have wings and can fly, and it is perfect for both of them.
 
-A penguins appeared, it has two wings but can't fly, so I create a `NoFlyBird`(class) and classify it.
+🐧 A Penguin arrives, it has two wings but can't fly, so I create a `NoFlyBird`(class) and classify it.
 
-A Kiwi appeared, it has two legs but doesn't have wings, so, is it not a bird? I confused.
+🥝 A Kiwi arrives, it has legs, but no wings.
 
-A rubber duck appeared...
+So, is it not a bird? I confused.
+
+🐤 A Rubber Duck arrives...
 
 ## What is the problem?
 
 we try to find common characteristics and put them in a base class(Bird), then put chicken and Duck into it.
 
-However, we never know what animal will appear next, and whether or not it will broken the previous class.
+However, we never know what animal will appear next, and break the existing hierarchy.
 
-If such thing occurs, we have to refactor the Bird class, add more properties or methods, or break the class into pieces, and regroup them, and regroup them, and regroup them, again and again.
+If such thing occurs, we have to refactor the Bird class, add more properties or methods, or break the class into pieces, and regroup them, and regroup them, again and again.
 
 And how to name the class? we will spend a lot of time thinking about this.
 
 
 ## How Composition solves this?
 
-Essentially, inheritance means 'is-a' relationship, while composition is a 'has-a/can-do' relationship.
+Inheritance forces an 'is-a' relationship, while composition is a 'has-a/can-do' relationship.
 
 For duck and chicken, we just give two wings and fly method.
 For penguins, we only give two wings.
