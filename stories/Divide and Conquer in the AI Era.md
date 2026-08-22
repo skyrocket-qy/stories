@@ -1,5 +1,7 @@
 # Divide and Conquer in the AI Era
 
+![The Magic Carpenter's Apprentice: Panda, Chihuahua, Owl, and the AI Robot](../assets/divide_and_conquer_ai_fable.jpg)
+
 ## 🪵 The Magic Carpenter's Apprentice
 
 The woodworking shop receives a new **"Magic Mechanical Robot"**.
